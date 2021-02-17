@@ -41,10 +41,7 @@ to Net::Curl::Easy can yield different input to libcurl.
 This library fixes that by requiring all strings to be B<byte> B<strings>
 and normalizing Perl’s internal storage before calling into Net::Curl::Easy.
 
-=item * C<new()> accepts a list of key/value pairs to give to C<set()>
-(see below).
-
-=item * C<perform> returns the instance object, which facilitates chaining.
+=item * Several methods are wrapped, as described below.
 
 =back
 
@@ -87,6 +84,8 @@ See L<curl_easy_setopt(3)> for the full set of options you can give here.
 
 Note that, since I<OBJ> is returned, you can chain calls to this with
 calls to other methods like C<perform()>.
+
+You may not need to call this method since C<new()> calls it for you.
 
 =cut
 
@@ -170,6 +169,10 @@ sub body { $_[0]{'body'} }
 =head1 WRAPPED METHODS
 
 =over
+
+=item * C<new()> takes a list of key/value pairs and passes it to
+an internal call to C<set()>. The returned object will always be a
+(newly-created) hash reference.
 
 =item * C<escape()> and C<send()> apply the character encoding fix described
 above.

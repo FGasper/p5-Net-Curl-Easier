@@ -1,5 +1,7 @@
 .gitignore
 Changes
 LICENSE
+MANIFEST
 Makefile.PL
+README.md
 lib/Net/Curl/Easier.pm
