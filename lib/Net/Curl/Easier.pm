@@ -256,4 +256,6 @@ Copyright 2021 by Gasper Software Consulting. All rights reserved.
 This library is licensed under the same terms as Perl itself.
 See L<perlartistic> for details.
 
+=cut
+
 1;
