@@ -24,16 +24,13 @@ WriteMakefile1(
     LICENSE      => 'perl',
 
     PREREQ_PM => {
+        'parent' => 0,
         'Net::Curl' => 0,
     },
 
     TEST_REQUIRES => {
-        'autodie' => 0,
-        'FindBin'         => 0,
-        'Test::More'      => 0,
-        'Test::FailWarnings' => 0,
-        'Test::Fatal'       => 0,
-        'Test::Deep' => '1.120',    # has none()
+        'Test2::V0' => 0,
+        'Test2::Plugin::NoWarnings' => 0,
         'Test::Class::Tiny' => 0,
     },
 );

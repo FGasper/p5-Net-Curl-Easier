@@ -17,7 +17,11 @@ use Net::Curl::Easier;
 __PACKAGE__->new()->runtests() if ! caller;
 
 sub SKIP_CLASS {
-    return "No UNIX sockets available (OS = $^O)!" if !Socket->can('AF_UNIX');
+    return "No UNIX sockets available (OS = $^O)." if !Socket->can('AF_UNIX');
+
+    if (!Net::Curl::Easier->can('CURLOPT_UNIX_SOCKET_PATH')) {
+        return sprintf "This curl (%s) lacks CURLOPT_UNIX_SOCKET_PATH.", Net::Curl::version();
+    }
 
     return;
 }
