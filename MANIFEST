@@ -1,0 +1,5 @@
+.gitignore
+Changes
+LICENSE
+Makefile.PL
+lib/Net/Curl/Easier.pm
