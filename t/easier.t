@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use autodie;
 
-use Test::More;
-use Test::FailWarnings;
+use Test2::V0 -no_utf8 => 1;
+use Test2::Plugin::NoWarnings;
 
 use parent 'Test::Class::Tiny';
 
@@ -45,8 +45,16 @@ sub _create_server {
 
         my $got = q<>;
         while ($got !~ $end_re) {
-            read $csock, $got, 512, length $got;
+            sysread $csock, $got, 512, length $got;
         }
+
+        print {$csock} join(
+            "\x0d\x0a",
+            "HTTP/1.0 200 OK",
+            'Content-Type: text/plain',
+            q<>,
+            'hello',
+        );
 
         close $csock;
 
@@ -79,7 +87,7 @@ sub T2_escape {
     return;
 }
 
-sub T3_lotta_stuff {
+sub T15_lotta_stuff {
     my $self = shift;
 
     my ($sockpath, $sent_pipe, $pid) = _create_server(qr<thepostdata\z>);
@@ -108,23 +116,89 @@ sub T3_lotta_stuff {
 
     $easy->pushopt(
         Net::Curl::Easy::CURLOPT_HTTPHEADER,
-        [ utf8::upgrade( my $v = "X-Käse: Käse" ) ],
+        [ do { utf8::upgrade( my $v = "X-Käse: Käse" ); $v } ],
     );
 
     $easy->setopt(
         Net::Curl::Easy::CURLOPT_USERAGENT,
-        utf8::upgrade( my $ua = "Très-Bien" ),
+        do { utf8::upgrade( my $ua = "Très-Bien" ); $ua },
+    );
+
+    is(
+        dies {
+            $easy->set(
+                useragent => 'not the real thing',
+                asdfasgagda => 'hey hey',
+            );
+        },
+        check_set(
+            match( qr<ASDFASGAGDA> ),
+            not_in_set( match( qr<Easier\.pm> ) ),
+        ),
+        'set() when given an invalid argument',
+    );
+
+    is(
+        dies {
+            $easy->push(
+                httpheader => ['Not: Real'],
+                asdfasgagda => 'hey hey',
+            );
+        },
+        check_set(
+            match( qr<ASDFASGAGDA> ),
+            not_in_set( match( qr<Easier\.pm> ) ),
+        ),
+        'set() when given an invalid argument',
     );
 
     is( $easy->perform(), $easy, 'perform() returns the object' );
 
     my $sent = do { local $/; <$sent_pipe> };
 
-    diag $sent;
-
     waitpid $pid, 0;
 
+    is($easy->body(), 'hello', 'body() as expected');
+    like( $easy->head(), qr<\AHTTP/.+\x0d\x0a\x0d\x0a\z>s, 'head() as expected' );
+
+    like($sent, qr<X-épée:\s+épée>, 'header via push()');
+    like($sent, qr<X-¡hola:\s+¡hola>, 'header via push() (again)');
+    like($sent, qr<X-Käse:\s+Käse>, 'header via pushopt()');
+    like($sent, qr<User-Agent: Très-Bien>, 'setopt(CURLOPT_USERAGENT) (and set() with invalid item doesn’t clobber)');
+    unlike($sent, qr<Not: Real>, 'push() with invalid item doesn’t go in' );
+
+    is( $easy->get('effective_method'), 'POST', 'get()' );
+
+    is(
+        dies { $easy->get('asdfasgagda') },
+        check_set(
+            match( qr<ASDFASGAGDA> ),
+            not_in_set( match( qr<Easier\.pm> ) ),
+        ),
+        'get() when given an invalid argument',
+    );
+
+    is(
+        dies { $easy->send('haha') },
+        object {
+            prop blessed => 'Net::Curl::Easy::Code',
+        },
+        'send() throws on HTTP',
+    );
+
     return;
+}
+
+sub T1_strerror {
+    is(
+        Net::Curl::Easier::strerror(0),
+        Net::Curl::Easy::strerror(0),
+        'strerror',
+    );
+}
+
+sub T1_isa {
+    isa_ok( 'Net::Curl::Easier', 'Net::Curl::Easy' );
 }
 
 1;

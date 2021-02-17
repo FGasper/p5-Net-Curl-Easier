@@ -17,7 +17,7 @@ WriteMakefile1(
         },
     },
 
-    NAME         => 'Net::Curl::Promiser',
+    NAME         => 'Net::Curl::Easier',
     AUTHOR       => 'Felipe Gasper (FELIPE)',
     VERSION_FROM => 'lib/Net/Curl/Easier.pm',         # finds \$VERSION
     ABSTRACT_FROM => 'lib/Net/Curl/Easier.pm',

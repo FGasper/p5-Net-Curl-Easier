@@ -63,6 +63,8 @@ presents a substantially different interface.
 
 use parent 'Net::Curl::Easy';
 
+our $VERSION = '0.01_01';
+
 #----------------------------------------------------------------------
 
 =head1 METHODS
@@ -145,7 +147,7 @@ sub get {
         Carp::croak("CURLINFO_$name doesn’t exist!");
     };
 
-    return $self->getinfo($nameval);
+    return $self->getinfo($nameval->());
 }
 
 =head2 $str = I<OBJ>->head()
