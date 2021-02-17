@@ -31,9 +31,7 @@ to Net::Curl::Easy can yield different input to libcurl.
     This library fixes that by requiring all strings to be **byte** **strings**
     and normalizing Perl’s internal storage before calling into Net::Curl::Easy.
 
-- `new()` accepts a list of key/value pairs to give to `set()`
-(see below).
-- `perform` returns the instance object, which facilitates chaining.
+- Several methods are wrapped, as described below.
 
 # SEE ALSO
 
@@ -62,6 +60,8 @@ See [curl\_easy\_setopt(3)](http://man.he.net/man3/curl_easy_setopt) for the ful
 Note that, since _OBJ_ is returned, you can chain calls to this with
 calls to other methods like `perform()`.
 
+You may not need to call this method since `new()` calls it for you.
+
 ## $obj = _OBJ_->push( $NAME1 => \\@VALUES1, $NAME2 => \\@VALUES2, .. )
 
 Like `set()`, but for `pushopt()`.
@@ -81,6 +81,9 @@ Returns the HTTP response body, as a byte string.
 
 # WRAPPED METHODS
 
+- `new()` takes a list of key/value pairs and passes it to
+an internal call to `set()`. The returned object will always be a
+(newly-created) hash reference.
 - `escape()` and `send()` apply the character encoding fix described
 above.
 - `setopt()` and `pushopt()` fix character encoding and return

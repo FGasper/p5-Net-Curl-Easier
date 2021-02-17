@@ -5,3 +5,4 @@ MANIFEST
 Makefile.PL
 README.md
 lib/Net/Curl/Easier.pm
+t/easier.t

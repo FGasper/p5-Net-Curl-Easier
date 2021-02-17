@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use autodie;
 
-use Test2::V0;
-use Test2::Plugin::NoWarnings;
+use Test::More;
+use Test::FailWarnings;
 
 use parent 'Test::Class::Tiny';
 
@@ -23,6 +23,8 @@ sub SKIP_CLASS {
 }
 
 sub _create_server {
+    my ($end_re) = @_;
+
     die 'list!' if !wantarray;
 
     my $dir = File::Temp::tempdir( CLEANUP => 1 );
@@ -42,8 +44,8 @@ sub _create_server {
         close $psock;
 
         my $got = q<>;
-        while ($got !~ m<\x0d\x0a\x0d\x0a>) {
-            read $csock, $got, 512;
+        while ($got !~ $end_re) {
+            read $csock, $got, 512, length $got;
         }
 
         close $csock;
@@ -80,7 +82,7 @@ sub T2_escape {
 sub T3_lotta_stuff {
     my $self = shift;
 
-    my ($sockpath, $sent_pipe, $pid) = _create_server();
+    my ($sockpath, $sent_pipe, $pid) = _create_server(qr<thepostdata\z>);
 
     my $easy = Net::Curl::Easier->new(
         UNIX_SOCKET_PATH => $sockpath,
