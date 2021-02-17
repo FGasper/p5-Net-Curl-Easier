@@ -100,5 +100,3 @@ Copyright 2021 by Gasper Software Consulting. All rights reserved.
 
 This library is licensed under the same terms as Perl itself.
 See [perlartistic](https://metacpan.org/pod/perlartistic) for details.
-
-1;

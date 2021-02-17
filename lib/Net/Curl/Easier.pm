@@ -73,7 +73,7 @@ Besides those inherited from Net::Curl::Easy, this class defines:
 
 =head2 $obj = I<OBJ>->set( $NAME1 => $VALUE1, $NAME2 => $VALUE2, .. )
 
-C<setopt()>s mutiple values in a single call. Instead of:
+C<setopt()>s multiple values in a single call. Instead of:
 
     $easy->setopt( Net::Curl::Easy::CURLOPT_URL, 'http://perl.org' );
     $easy->setopt( Net::Curl::Easy::CURLOPT_VERBOSE, 1 );
