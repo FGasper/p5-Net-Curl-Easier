@@ -171,7 +171,7 @@ sub T15_lotta_stuff {
     like($sent, qr<User-Agent: Très-Bien>, 'setopt(CURLOPT_USERAGENT) (and set() with invalid item doesn’t clobber)');
     unlike($sent, qr<Not: Real>, 'push() with invalid item doesn’t go in' );
 
-    is( $easy->get('effective_method'), 'POST', 'get()' );
+    like( $easy->get('effective_url'), qr<localhost>, 'get()' );
 
     is(
         dies { $easy->get('asdfasgagda') },
