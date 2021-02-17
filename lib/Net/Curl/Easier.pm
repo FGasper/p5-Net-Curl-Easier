@@ -38,8 +38,9 @@ L<SvPV|perlapi/SvPV>, which means that what libcurl receives depends on
 how Perl internally stores your string. Thus, two identical strings given
 to Net::Curl::Easy can yield different input to libcurl.
 
-This library fixes that by requiring all strings to be B<byte> B<strings>
-and normalizing Perl’s internal storage before calling into Net::Curl::Easy.
+This library fixes that by requiring all strings that it receives
+to be B<byte> B<strings> and normalizing Perl’s internal storage before
+calling into Net::Curl::Easy.
 
 =item * Several methods are wrapped, as described below.
 

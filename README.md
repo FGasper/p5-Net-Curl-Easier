@@ -28,8 +28,9 @@ but frequently unhelpful.
 how Perl internally stores your string. Thus, two identical strings given
 to Net::Curl::Easy can yield different input to libcurl.
 
-    This library fixes that by requiring all strings to be **byte** **strings**
-    and normalizing Perl’s internal storage before calling into Net::Curl::Easy.
+    This library fixes that by requiring all strings that it receives
+    to be **byte** **strings** and normalizing Perl’s internal storage before
+    calling into Net::Curl::Easy.
 
 - Several methods are wrapped, as described below.
 
@@ -46,7 +47,7 @@ Besides those inherited from Net::Curl::Easy, this class defines:
 
 ## $obj = _OBJ_->set( $NAME1 => $VALUE1, $NAME2 => $VALUE2, .. )
 
-`setopt()`s mutiple values in a single call. Instead of:
+`setopt()`s multiple values in a single call. Instead of:
 
     $easy->setopt( Net::Curl::Easy::CURLOPT_URL, 'http://perl.org' );
     $easy->setopt( Net::Curl::Easy::CURLOPT_VERBOSE, 1 );
