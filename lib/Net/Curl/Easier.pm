@@ -66,7 +66,7 @@ presents a substantially different interface.
 
 use parent 'Net::Curl::Easy';
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.01';
 
 #----------------------------------------------------------------------
 
