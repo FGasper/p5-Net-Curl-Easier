@@ -24,9 +24,11 @@ This module extends Net::Curl::Easy, with differences as noted here:
 Net::Curl::Easy simply adopts libcurl’s defaults, which is understandable
 but frequently unhelpful.
 - Character encoding. As of this writing Net::Curl::Easy uses
-[SvPV](https://metacpan.org/pod/perlapi#SvPV), which means that what libcurl receives depends on
-how Perl internally stores your string. Thus, two identical strings given
-to Net::Curl::Easy can yield different input to libcurl.
+[SvPV](https://perldoc.perl.org/perlapi#SvPV) to translate Perl strings to C,
+which means that what libcurl receives depends on how Perl internally stores
+your string. Thus, the same string given to Net::Curl::Easy can yield
+different input to libcurl depending on how Perl has decided to store that
+string.
 
     This library fixes that by requiring all strings that it receives
     to be **byte** **strings** and normalizing Perl’s internal storage before

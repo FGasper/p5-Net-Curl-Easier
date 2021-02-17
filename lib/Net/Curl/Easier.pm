@@ -34,9 +34,11 @@ Net::Curl::Easy simply adopts libcurl’s defaults, which is understandable
 but frequently unhelpful.
 
 =item * Character encoding. As of this writing Net::Curl::Easy uses
-L<SvPV|perlapi/SvPV>, which means that what libcurl receives depends on
-how Perl internally stores your string. Thus, two identical strings given
-to Net::Curl::Easy can yield different input to libcurl.
+L<SvPV|https://perldoc.perl.org/perlapi#SvPV> to translate Perl strings to C,
+which means that what libcurl receives depends on how Perl internally stores
+your string. Thus, the same string given to Net::Curl::Easy can yield
+different input to libcurl depending on how Perl has decided to store that
+string.
 
 This library fixes that by requiring all strings that it receives
 to be B<byte> B<strings> and normalizing Perl’s internal storage before
